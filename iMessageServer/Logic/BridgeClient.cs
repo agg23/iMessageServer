@@ -4,6 +4,9 @@ using System.Text;
 
 using System.Net.WebSockets;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using iMessageServer.Utility;
+using iMessageServer.Models;
 
 namespace iMessageServer
 {
@@ -61,7 +64,99 @@ namespace iMessageServer
 
         private void OnText(String stringValue)
         {
-            Console.WriteLine(stringValue);
+            //Console.WriteLine(stringValue);
+
+            //dynamic json = JsonConvert.DeserializeObject(stringValue);
+
+            //if (!ExpandoObjectHelper.HasProperty(json, "action"))
+            //{
+            //    // Invalid Response
+            //    return;
+            //}
+
+            //var action = json.action;
+
+            //if (action == "received")
+            //{
+            //    var 
+            //}
+
+            var json = new BridgeJSON();
+
+            try
+            {
+                json = JsonConvert.DeserializeObject<BridgeJSON>(stringValue);
+            }
+            catch (JsonReaderException e)
+            {
+                Console.WriteLine(e);
+                return;
+            }
+
+            Console.WriteLine(json);
+            Console.WriteLine(json.action);
+            Console.WriteLine(json.message);
+            Console.WriteLine(json.conversation);
+
+            switch (json.action)
+            {
+                case "received":
+                    OnReceivedMessage(json.message, json.conversation);
+                    break;
+                case "delivered":
+                    OnDeliveredMessage(json.message, json.conversation);
+                    break;
+                case "read":
+                    OnReadMessage(json.message, json.conversation);
+                    break;
+                case "sent":
+                    OnSentMessage(json.message, json.conversation);
+                    break;
+                case "sendFailed":
+                    OnSendFailedMessage(json.message, json.conversation);
+                    break;
+                case "addedConversations":
+                    OnAddedConversations(json.conversations);
+                    break;
+                case "removedConversations":
+                    OnRemovedConversations(json.conversations);
+                    break;
+            }
+        }
+
+        private void OnReceivedMessage(Message message, Conversation conversation)
+        {
+            
+        }
+
+        private void OnDeliveredMessage(Message message, Conversation conversation)
+        {
+
+        }
+
+        private void OnReadMessage(Message message, Conversation conversation)
+        {
+
+        }
+
+        private void OnSentMessage(Message message, Conversation conversation)
+        {
+
+        }
+
+        private void OnSendFailedMessage(Message message, Conversation conversation)
+        {
+
+        }
+
+        private void OnAddedConversations(Conversation[] conversations)
+        {
+
+        }
+
+        private void OnRemovedConversations(Conversation[] conversations)
+        {
+
         }
     }
 }
