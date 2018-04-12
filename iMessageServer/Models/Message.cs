@@ -13,5 +13,22 @@ namespace iMessageServer.Models
             this.text = text;
             this.isFromMe = isFromMe;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            Message message = obj as Message;
+
+            return guid.Equals(message.guid);
+        }
+
+        public override int GetHashCode()
+        {
+            return guid.GetHashCode();
+        }
     }
 }
