@@ -126,7 +126,7 @@ namespace iMessageServer
 
         private void OnReceivedMessage(Message message, Conversation conversation)
         {
-            MessageState.Instance.AddMessage(message, conversation);
+            MessageController.Instance.AddMessage(message, conversation);
         }
 
         private void OnDeliveredMessage(Message message, Conversation conversation)
