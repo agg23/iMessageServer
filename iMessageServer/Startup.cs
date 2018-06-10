@@ -12,8 +12,6 @@ namespace iMessageServer
 {
     public class Startup
     {
-        private BridgeClient bridgeClient = new BridgeClient();
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,6 +23,7 @@ namespace iMessageServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<MessageController>();
+            services.AddSingleton<BridgeClient>();
             services.AddMvc();
             services.AddSignalR();
         }

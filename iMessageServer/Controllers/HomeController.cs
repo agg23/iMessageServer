@@ -10,6 +10,14 @@ namespace iMessageServer.Controllers
 {
     public class HomeController : Controller
     {
+        private BridgeClient bridgeClient;
+
+        public HomeController(BridgeClient bridgeClient)
+        {
+            // TODO: Find better way to initialize singleton
+            this.bridgeClient = bridgeClient;
+        }
+
         public IActionResult Index()
         {
             return View();

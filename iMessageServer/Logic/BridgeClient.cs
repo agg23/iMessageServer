@@ -14,10 +14,13 @@ namespace iMessageServer
     {
         private const int CHUNK_SIZE = 1024;
 
+        private MessageController messageController;
         private ClientWebSocket client = new ClientWebSocket();
 
-        public BridgeClient()
+        public BridgeClient(MessageController messageController)
         {
+            this.messageController = messageController;
+
             Connect();
         }
 
@@ -26,7 +29,7 @@ namespace iMessageServer
             Console.WriteLine("Setting up WebSockets");
 
             var token = new CancellationToken();
-            await client.ConnectAsync(new Uri("ws://localhost:9000"), token);
+            await client.ConnectAsync(new Uri("ws://172.16.212.1:9000"), token);
 
             Console.WriteLine(token);
 
@@ -126,7 +129,7 @@ namespace iMessageServer
 
         private void OnReceivedMessage(Message message, Conversation conversation)
         {
-            MessageController.Instance.AddMessage(message, conversation);
+            messageController.AddMessage(message, conversation);
         }
 
         private void OnDeliveredMessage(Message message, Conversation conversation)
