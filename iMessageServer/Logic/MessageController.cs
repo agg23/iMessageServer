@@ -3,51 +3,62 @@ using iMessageServer.Models;
 using iMessageServer.Logic;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Linq;
+using iMessageServer.Models.Database;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace iMessageServer
 {
     public class MessageController
     {
-        public Dictionary<Conversation, List<Message>> messages;
-
         private IHubContext<MessageHub> hub;
+        private MessageDBContext context;
 
-        public MessageController(IHubContext<MessageHub> messageHub)
+        public MessageController(IHubContext<MessageHub> messageHub, MessageDBContext context)
         {
             hub = messageHub;
-            messages = new Dictionary<Conversation, List<Message>>();
+            this.context = context;
         }
 
         // Conversations
 
-        public bool AddConversation(Conversation conversation)
+        /// <summary>
+        /// Adds a conversation to the DB if it does not already exist and stores the watched conversation in the message.
+        /// Does not persist DB changes.
+        /// </summary>
+        /// <param name="message">Message in the conversation to add</param>
+        public async Task AddMessageConversation(Message message)
         {
-            if (!messages.ContainsKey(conversation))
+            var messageConversation = message.conversation;
+            var addedConversation = await context.Conversations.Where(c => c.guid == messageConversation.guid).FirstOrDefaultAsync();
+
+            if (addedConversation == null)
             {
-                messages[conversation] = new List<Message>();
-                return true;
+                context.Conversations.Add(messageConversation);
+                addedConversation = messageConversation;
             }
 
-            return false;
+            message.conversation = addedConversation;
         }
 
         // Message
 
-        public void AddMessage(Message message, Conversation conversation)
+        public async Task AddMessage(Message message)
         {
-            AddConversation(conversation);
+            await AddMessageConversation(message);
 
-            var list = messages[conversation];
-            list.Add(message);
+            context.Messages.Add(message);
 
-            SendMessage(message, conversation);
+            await context.SaveChangesAsync();
+
+            SendMessage(message);
         }
 
-        public void SendMessage(Message message, Conversation conversation)
+        public void SendMessage(Message message)
         {
-            Object[] objects = new Object[2];
+            Object[] objects = new Object[1];
             objects[0] = message;
-            objects[1] = conversation;
             hub.Clients.All.SendCoreAsync("ReceivedMessage", objects);
         }
     }

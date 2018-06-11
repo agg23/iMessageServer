@@ -1,11 +1,17 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace iMessageServer.Models
 {
     public class Message
     {
+        [Key]
+        public int id { get; set; }
+
         public string guid { get; }
-        public string text { get; }
-        public bool isFromMe { get; }
+        public string text { get; set; }
+        public bool isFromMe { get; set; }
+        public Conversation conversation { set; get; }
 
         public Message(string guid, string text, bool isFromMe)
         {
@@ -16,7 +22,7 @@ namespace iMessageServer.Models
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || obj.GetType() != typeof(Message))
             {
                 return false;
             }

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using iMessageServer.Utility;
 using iMessageServer.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace iMessageServer
 {
@@ -14,12 +16,12 @@ namespace iMessageServer
     {
         private const int CHUNK_SIZE = 1024;
 
-        private MessageController messageController;
         private ClientWebSocket client = new ClientWebSocket();
+        private IServiceProvider serviceProvider;
 
-        public BridgeClient(MessageController messageController)
+        public BridgeClient(IServiceProvider serviceProvider)
         {
-            this.messageController = messageController;
+            this.serviceProvider = serviceProvider;
 
             Connect();
         }
@@ -102,22 +104,29 @@ namespace iMessageServer
             Console.WriteLine(json.message);
             Console.WriteLine(json.conversation);
 
+            var message = json.message;
+
             switch (json.action)
             {
                 case "received":
-                    OnReceivedMessage(json.message, json.conversation);
+                    message.conversation = json.conversation;
+                    OnReceivedMessage(message);
                     break;
                 case "delivered":
-                    OnDeliveredMessage(json.message, json.conversation);
+                    message.conversation = json.conversation;
+                    OnDeliveredMessage(message);
                     break;
                 case "read":
-                    OnReadMessage(json.message, json.conversation);
+                    message.conversation = json.conversation;
+                    OnReadMessage(message);
                     break;
                 case "sent":
-                    OnSentMessage(json.message, json.conversation);
+                    message.conversation = json.conversation;
+                    OnSentMessage(message);
                     break;
                 case "sendFailed":
-                    OnSendFailedMessage(json.message, json.conversation);
+                    message.conversation = json.conversation;
+                    OnSendFailedMessage(message);
                     break;
                 case "addedConversations":
                     OnAddedConversations(json.conversations);
@@ -128,27 +137,34 @@ namespace iMessageServer
             }
         }
 
-        private void OnReceivedMessage(Message message, Conversation conversation)
+        private void OnReceivedMessage(Message message)
         {
-            messageController.AddMessage(message, conversation);
+            //new MessageController().AddMessage(message);
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var messageController = (MessageController)serviceScope.ServiceProvider.GetService<MessageController>();
+                messageController.AddMessage(message);
+            }
+            //var messageController = (MessageController)serviceProvider.GetService(typeof(MessageController));
+            //messageController.AddMessage(message);
         }
 
-        private void OnDeliveredMessage(Message message, Conversation conversation)
-        {
-
-        }
-
-        private void OnReadMessage(Message message, Conversation conversation)
-        {
-
-        }
-
-        private void OnSentMessage(Message message, Conversation conversation)
+        private void OnDeliveredMessage(Message message)
         {
 
         }
 
-        private void OnSendFailedMessage(Message message, Conversation conversation)
+        private void OnReadMessage(Message message)
+        {
+
+        }
+
+        private void OnSentMessage(Message message)
+        {
+
+        }
+
+        private void OnSendFailedMessage(Message message)
         {
 
         }

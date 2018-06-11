@@ -1,12 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace iMessageServer.Models
 {
     public class Conversation
     {
-        public string guid;
-        public string accountType;
-        public string user;
-        public bool isGroupChat;
+        [Key]
+        public string guid { get; set; }
+        public string accountType { get; set; }
+        public string user { get; set; }
+        public bool isGroupChat { get; set; }
 
 		public override bool Equals(object obj)
 		{
