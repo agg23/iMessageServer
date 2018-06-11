@@ -29,6 +29,7 @@ namespace iMessageServer
             Console.WriteLine("Setting up WebSockets");
 
             var token = new CancellationToken();
+            // TODO: Handle can't connect
             await client.ConnectAsync(new Uri("ws://172.16.212.1:9000"), token);
 
             Console.WriteLine(token);

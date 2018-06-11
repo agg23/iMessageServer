@@ -6,27 +6,5 @@
     <input type="text" id="message" />
     <input type="button" id="sendmessage" value="Send" />
     <input type="hidden" id="displayname" />
-    <ul id="discussion">
-    </ul>
+    <ul id="discussion"></ul>
 </div>
-<!--Script references. -->
-<!--Reference the jQuery library. -->
-<script src="~/lib/jquery/dist/jquery.min.js" ></script>
-<!--Reference the SignalR library. -->
-<script src="~/lib/signalr/signalr.js"></script>
-<script src="~/js/site.js"></script>
-<!--Add script to update the page and send messages.--> 
-@*<script type="text/javascript">
-    console.log(signalR);
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/hub")
-        .configureLogging(signalR.LogLevel.Information)
-        .build();
-
-    connection.on("broadcastMessage", (user, message) => {
-        console.log(user);
-        console.log(message);
-    });
-
-    connection.start().catch(err => console.error(err.toString()));
-</script>*@

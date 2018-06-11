@@ -48,7 +48,7 @@ namespace iMessageServer
             Object[] objects = new Object[2];
             objects[0] = message;
             objects[1] = conversation;
-            hub.Clients.All.SendCoreAsync("broadcastMessage", objects);
+            hub.Clients.All.SendCoreAsync("ReceivedMessage", objects);
         }
     }
 }

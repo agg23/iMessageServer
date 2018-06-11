@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\js\%2540aspnet\**" />
+    <Content Remove="wwwroot\js\%2540aspnet\**" />
+    <EmbeddedResource Remove="wwwroot\js\%2540aspnet\**" />
+    <None Remove="wwwroot\js\%2540aspnet\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview2-final" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-preview2-final" />
@@ -24,8 +31,16 @@
     <Compile Remove="Logic\MessageServer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\lib\signalr\signalr.min.js" />
-    <None Include="wwwroot\lib\signalr\signalr.min.js.map" />
+    <Content Remove="wwwroot\ts\hub.ts" />
+    <Content Remove="wwwroot\ts\site.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\js\%40aspnet\signalr.js" />
+    <None Include="wwwroot\js\%40aspnet\signalr.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\ts\hub.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\site.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
