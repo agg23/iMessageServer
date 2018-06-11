@@ -59,6 +59,9 @@ namespace iMessageServer
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "api",
+                    template: "api/{action}/{id?}");
             });
 
             //client = new BridgeClient(app.ApplicationServices);

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iMessageServer.Models
 {
@@ -8,9 +10,12 @@ namespace iMessageServer.Models
         [Key]
         public int id { get; set; }
 
-        public string guid { get; }
+        [Index]
+        public string guid { get; set; }
         public string text { get; set; }
         public bool isFromMe { get; set; }
+
+        [JsonIgnore]
         public Conversation conversation { set; get; }
 
         public Message(string guid, string text, bool isFromMe)
