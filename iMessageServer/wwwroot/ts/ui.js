@@ -5,13 +5,29 @@ define(["require", "exports"], function (require, exports) {
         constructor(state) {
             this.state = state;
         }
+        // Conversations
+        selectConversation(conversation) {
+            if (conversation == null) {
+                return;
+            }
+            // Clear all selected tags
+            $(".conversation").removeClass("selected");
+            $(".conversation#" + conversation.guid).addClass("selected");
+        }
         registerConversationClick(funct) {
-            $(".conversations").on("click", ".conversation", funct);
+            $(".conversations").on("click", ".conversation", (event) => funct(event.target));
+        }
+        renderConversations() {
+            for (let conversation of this.state.conversations) {
+                this.renderConversation(conversation);
+            }
+            this.selectConversation(this.state.activeConversation);
         }
         renderConversation(conversation) {
             $(".conversations").append("<div class=\"conversation\" id=\""
                 + conversation.guid + "\">" + conversation.user + "</div>");
         }
+        // Messages
         renderMessages() {
             if (this.state.activeConversation == null) {
                 return;

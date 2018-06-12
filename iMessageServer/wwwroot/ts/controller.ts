@@ -9,22 +9,41 @@ class Controller {
 
     constructor() {
         this.state = new ControllerState();
+        this.state.loadState();
         this.ui = new UI(this.state);
 
-        console.log("Registering click");
         this.ui.registerConversationClick((element) => {
-            console.log(element);
+            var conversation = this.conversationFromGuid(element.id);
+            if (conversation != null) {
+                this.setActiveConversation(conversation);
+            }
         });
+
+        this.ui.renderConversations();
     }
 
     // Conversations
 
-    //public setActiveConversation(conversation: IConversation) {
-    //    this.activeConversation = conversation;
-    //}
+    public conversationFromGuid(guid: string): IConversation {
+        return this.state.conversations.find(c => c.guid === guid);
+    }
+
+    public setActiveConversation(conversation: IConversation) {
+        if (this.state.activeConversation == conversation) {
+            return;
+        }
+
+        this.state.activeConversation = conversation;
+
+        // Select Conversation in UI
+        this.ui.selectConversation(conversation);
+
+        // Render Messages in selected Conversation
+        this.ui.renderMessages();
+    }
 
     public addConversation(conversation: IConversation) {
-        if (this.state.conversations.find(c => c.guid === conversation.guid) != null) {
+        if (this.conversationFromGuid(conversation.guid) != null) {
             return;
         }
 
@@ -32,6 +51,8 @@ class Controller {
 
         var messages = new Array<IMessage>();
         this.state.messages.set(conversation.guid, messages);
+
+        this.state.saveState();
 
         this.ui.renderConversation(conversation);
     }

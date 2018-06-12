@@ -9,14 +9,37 @@ class UI {
         this.state = state;
     }
 
+    // Conversations
+
+    public selectConversation(conversation: IConversation) {
+        if (conversation == null) {
+            return;
+        }
+
+        // Clear all selected tags
+        $(".conversation").removeClass("selected");
+
+        $(".conversation#" + conversation.guid).addClass("selected");
+    }
+
     public registerConversationClick(funct: (element) => void) {
-        $(".conversations").on("click", ".conversation", funct);
+        $(".conversations").on("click", ".conversation", (event) => funct(event.target));
+    }
+
+    public renderConversations() {
+        for (let conversation of this.state.conversations) {
+            this.renderConversation(conversation);
+        }
+
+        this.selectConversation(this.state.activeConversation);
     }
 
     public renderConversation(conversation: IConversation) {
         $(".conversations").append("<div class=\"conversation\" id=\""
             + conversation.guid + "\">" + conversation.user + "</div>");
     }
+
+    // Messages
 
     public renderMessages() {
         if (this.state.activeConversation == null) {
