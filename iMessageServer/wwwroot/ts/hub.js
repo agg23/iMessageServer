@@ -2,16 +2,19 @@ define(["require", "exports", "@aspnet/signalr"], function (require, exports, si
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     class Hub {
-        constructor() {
+        constructor(controller) {
             this.connection = new signalr_1.HubConnectionBuilder().withUrl("/hub").build();
-            this.connection.on("ReceivedMessage", this.receivedMessage);
+            this.controller = controller;
+            this.connection.on("ReceivedMessage", (message) => this.receivedMessage(this.controller, message));
         }
         connect() {
             this.connection.start().catch(err => console.error(err.toString()));
         }
-        receivedMessage(message, conversation) {
-            console.log(conversation);
+        receivedMessage(controller, message) {
+            //console.log(conversation);
             console.log(message);
+            controller.addMessage(message);
+            //this.ui.addConversation(message.conversation);
         }
     }
     exports.Hub = Hub;

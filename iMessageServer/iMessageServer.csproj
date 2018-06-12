@@ -33,7 +33,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\ts\hub.ts" />
+    <Content Remove="wwwroot\ts\models\controllerstate.ts" />
+    <Content Remove="wwwroot\ts\models\conversation.ts" />
+    <Content Remove="wwwroot\ts\models\message.ts" />
     <Content Remove="wwwroot\ts\site.ts" />
+    <Content Remove="wwwroot\ts\ui.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\js\%40aspnet\signalr.js" />
@@ -41,7 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="wwwroot\ts\hub.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\models\controllerstate.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\models\conversation.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\models\message.ts" />
     <TypeScriptCompile Include="wwwroot\ts\site.ts" />
+    <TypeScriptCompile Include="wwwroot\ts\ui.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
