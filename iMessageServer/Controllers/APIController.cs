@@ -25,14 +25,16 @@ namespace iMessageServer.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Message>> Messages(string id)
+        public ActionResult<List<Message>> Messages(string conversationId)
         {
-            if(id == null)
+            if(conversationId == null)
             {
                 return null;
             }
 
-            return context.Messages.Where(m => m.guid == id).ToList();
+            //TODO: Fix
+            //return context.Messages.Where(m => m.guid == id).ToList();
+            return null;
         }
     }
 }

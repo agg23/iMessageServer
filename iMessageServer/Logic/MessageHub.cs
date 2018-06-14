@@ -5,8 +5,17 @@ namespace iMessageServer.Logic
 {
     public class MessageHub: Hub
     {
-        public MessageHub()
+        private BridgeClient client;
+
+        public MessageHub(BridgeClient client)
         {
+            this.client = client;
+        }
+
+        public void SendMessage(string guid, string text)
+        {
+            Console.WriteLine(text);
+            this.client.SendMessage(new Message(guid, text, true));
         }
     }
 }

@@ -12,7 +12,7 @@ define(["require", "exports"], function (require, exports) {
             }
             // Clear all selected tags
             $(".conversation").removeClass("selected");
-            $(".conversation#" + conversation.guid).addClass("selected");
+            $(".conversation#" + conversation.guid.replace(/;/g, "\\;").replace(/\+/g, "\\+")).addClass("selected");
         }
         registerConversationClick(funct) {
             $(".conversations").on("click", ".conversation", (event) => funct(event.target));
@@ -44,6 +44,9 @@ define(["require", "exports"], function (require, exports) {
         }
         renderMessage(message) {
             $(".messages").append("<div><div>" + message.text + "</div><div>" + message.isFromMe + "</div></div>");
+        }
+        registerSendClick(funct) {
+            $("#sendmessage").click(() => funct());
         }
     }
     exports.UI = UI;

@@ -9,6 +9,7 @@ using iMessageServer.Utility;
 using iMessageServer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 
 namespace iMessageServer
 {
@@ -177,6 +178,18 @@ namespace iMessageServer
         private void OnRemovedConversations(Conversation[] conversations)
         {
 
+        }
+
+        public void SendMessage(Message message)
+        {
+            var messageJson = JObject.FromObject(message);
+
+            var json = new JObject();
+            json.Add("action", "send");
+            json.Add("message", messageJson);
+
+            this.client.SendAsync(Encoding.UTF8.GetBytes(json.ToString()), 
+                WebSocketMessageType.Text, true, CancellationToken.None);
         }
     }
 }

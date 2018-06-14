@@ -12,6 +12,10 @@ define(["require", "exports", "./ui.js", "./models/controllerstate.js"], functio
                     this.setActiveConversation(conversation);
                 }
             });
+            this.ui.registerSendClick(() => {
+                console.log("CLick");
+                this.sendMessage("test", this.state.activeConversation);
+            });
             this.ui.renderConversations();
         }
         // Conversations
@@ -50,6 +54,10 @@ define(["require", "exports", "./ui.js", "./models/controllerstate.js"], functio
             if (this.state.activeConversation != null && message.guid === this.state.activeConversation.guid) {
                 this.ui.renderMessage(message);
             }
+        }
+        sendMessage(text, conversation) {
+            var message = { "text": text, "guid": conversation.guid, "isFromMe": true };
+            this.sendMessageFunction(message);
         }
     }
     exports.Controller = Controller;

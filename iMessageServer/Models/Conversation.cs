@@ -1,12 +1,17 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace iMessageServer.Models
 {
     public class Conversation
     {
         [Key]
+        public int id { get; set; }
+
+        [Index(IsUnique = true)]
         public string guid { get; set; }
+
         public string accountType { get; set; }
         public string user { get; set; }
         public bool isGroupChat { get; set; }

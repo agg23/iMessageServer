@@ -19,7 +19,7 @@ class UI {
         // Clear all selected tags
         $(".conversation").removeClass("selected");
 
-        $(".conversation#" + conversation.guid).addClass("selected");
+        $(".conversation#" + conversation.guid.replace(/;/g, "\\;").replace(/\+/g, "\\+")).addClass("selected");
     }
 
     public registerConversationClick(funct: (element) => void) {
@@ -62,6 +62,10 @@ class UI {
 
     public renderMessage(message: IMessage) {
         $(".messages").append("<div><div>" + message.text + "</div><div>" + message.isFromMe + "</div></div>");
+    }
+
+    public registerSendClick(funct: () => void) {
+        $("#sendmessage").click(() => funct());
     }
 }
 

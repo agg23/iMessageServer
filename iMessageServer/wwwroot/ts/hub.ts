@@ -9,6 +9,7 @@ class Hub {
     constructor(controller: Controller) {
         this.controller = controller;
         this.connection.on("ReceivedMessage", (message: IMessage) => this.receivedMessage(this.controller, message));
+        this.controller.sendMessageFunction = (message: IMessage) => this.sendMessage(this.connection, message);
     }
 
     public connect() {
@@ -16,11 +17,16 @@ class Hub {
     }
 
     private receivedMessage(controller: Controller, message: IMessage) {
-        //console.log(conversation);
         console.log(message);
 
         controller.addMessage(message);
-        //this.ui.addConversation(message.conversation);
+    }
+
+    private sendMessage(connection: HubConnection, message: IMessage) {
+        console.log("Sending");
+        console.log(message);
+
+        connection.send("SendMessage", message.guid, message.text);
     }
 }
 

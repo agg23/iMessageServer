@@ -7,6 +7,8 @@ class Controller {
     private state: ControllerState;
     private ui: UI;
 
+    public sendMessageFunction: (IMessage) => void;
+
     constructor() {
         this.state = new ControllerState();
         this.state.loadState();
@@ -18,6 +20,10 @@ class Controller {
                 this.setActiveConversation(conversation);
             }
         });
+        this.ui.registerSendClick(() => {
+            console.log("CLick");
+            this.sendMessage("test", this.state.activeConversation);
+        })
 
         this.ui.renderConversations();
     }
@@ -74,6 +80,12 @@ class Controller {
         if (this.state.activeConversation != null && message.guid === this.state.activeConversation.guid) {
             this.ui.renderMessage(message);
         }
+    }
+
+    public sendMessage(text: string, conversation: IConversation) {
+        var message: IMessage = { "text": text, "guid": conversation.guid, "isFromMe": true };
+
+        this.sendMessageFunction(message);
     }
 }
 
