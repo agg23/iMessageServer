@@ -7,8 +7,9 @@ define(["require", "exports"], function (require, exports) {
             this.messages = new Map();
         }
         saveState() {
+            console.log("Saving state");
             localStorage.setItem("conversations", JSON.stringify(this.conversations));
-            localStorage.setItem("messages", JSON.stringify(this.messages));
+            localStorage.setItem("messages", this.strMapToJson(this.messages));
             var guid = this.activeConversation != null ? this.activeConversation.guid : null;
             localStorage.setItem("activeConversationGuid", guid);
         }
@@ -16,29 +17,53 @@ define(["require", "exports"], function (require, exports) {
             console.log("Loading application state");
             var loadedConversations = JSON.parse(localStorage.getItem("conversations"));
             var conversations = new Array();
-            for (let conversation of loadedConversations) {
-                conversations.push(conversation);
-            }
-            if (conversations instanceof Array) {
-                console.log("Conversation cast failed");
+            if (loadedConversations != null) {
+                for (let conversation of loadedConversations) {
+                    conversations.push(conversation);
+                }
             }
             this.conversations = conversations;
-            var loadedMessages = JSON.parse(localStorage.getItem("messages"));
+            var loadedMessages = this.jsonToStrMap(localStorage.getItem("messages"));
             var messages = new Map();
-            for (let guid in loadedMessages) {
-                var loadedGuidMessages = loadedMessages[guid];
-                var guidMessages = new Array();
-                for (let message of loadedGuidMessages) {
-                    guidMessages.push(message);
+            if (loadedMessages != null) {
+                for (let guid of Array.from(loadedMessages.keys())) {
+                    var loadedGuidMessages = loadedMessages.get(guid);
+                    var guidMessages = new Array();
+                    if (loadedGuidMessages == null) {
+                        continue;
+                    }
+                    for (let message of loadedGuidMessages) {
+                        guidMessages.push(message);
+                    }
+                    messages.set(guid, guidMessages);
                 }
-                messages.set(guid, guidMessages);
-            }
-            if (messages instanceof Map) {
-                console.log("Messages cast failed");
             }
             this.messages = messages;
             var guid = localStorage.getItem("activeConversationGuid");
             this.activeConversation = this.conversations.find(c => c.guid === guid);
+        }
+        strMapToObj(strMap) {
+            let obj = Object.create(null);
+            for (let [k, v] of strMap) {
+                obj[k] = v;
+            }
+            return obj;
+        }
+        objToStrMap(obj) {
+            if (obj == null) {
+                return null;
+            }
+            let strMap = new Map();
+            for (let k of Object.keys(obj)) {
+                strMap.set(k, obj[k]);
+            }
+            return strMap;
+        }
+        strMapToJson(strMap) {
+            return JSON.stringify(this.strMapToObj(strMap));
+        }
+        jsonToStrMap(jsonStr) {
+            return this.objToStrMap(JSON.parse(jsonStr));
         }
     }
     exports.ControllerState = ControllerState;

@@ -46,6 +46,7 @@ define(["require", "exports", "./ui.js", "./models/controllerstate.js"], functio
                 this.state.messages.set(message.guid, messages);
             }
             messages.push(message);
+            this.state.saveState();
             if (this.state.activeConversation != null && message.guid === this.state.activeConversation.guid) {
                 this.ui.renderMessage(message);
             }

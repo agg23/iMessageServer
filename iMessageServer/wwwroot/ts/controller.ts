@@ -69,6 +69,8 @@ class Controller {
 
         messages.push(message);
 
+        this.state.saveState();
+
         if (this.state.activeConversation != null && message.guid === this.state.activeConversation.guid) {
             this.ui.renderMessage(message);
         }

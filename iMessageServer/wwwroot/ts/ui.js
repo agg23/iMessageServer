@@ -35,6 +35,9 @@ define(["require", "exports"], function (require, exports) {
             // Clear div
             $(".messages").empty();
             let messages = this.state.messages.get(this.state.activeConversation.guid);
+            if (messages == null) {
+                return;
+            }
             for (let message of messages) {
                 this.renderMessage(message);
             }
