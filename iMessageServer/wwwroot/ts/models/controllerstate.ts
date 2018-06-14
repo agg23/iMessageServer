@@ -57,7 +57,7 @@ class ControllerState {
         this.activeConversation = this.conversations.find(c => c.guid === guid);
     }
 
-    private strMapToObj(strMap) {
+    private strMapToObj(strMap: Map<string, any>): Object {
         let obj = Object.create(null);
         for (let [k, v] of strMap) {
             obj[k] = v;
@@ -66,7 +66,7 @@ class ControllerState {
         return obj;
     }
 
-    private objToStrMap(obj) {
+    private objToStrMap(obj: Object): Map<string, any> {
         if (obj == null) {
             return null;
         }
@@ -79,11 +79,11 @@ class ControllerState {
         return strMap;
     }
 
-    private strMapToJson(strMap) {
+    private strMapToJson(strMap: Map<string, any>): string {
         return JSON.stringify(this.strMapToObj(strMap));
     }
 
-    private jsonToStrMap(jsonStr) {
+    private jsonToStrMap(jsonStr: string): Map<string, any> {
         return this.objToStrMap(JSON.parse(jsonStr));
     }
 }
