@@ -46,7 +46,10 @@ define(["require", "exports"], function (require, exports) {
             $(".messages").append("<div><div>" + message.text + "</div><div>" + message.isFromMe + "</div></div>");
         }
         registerSendClick(funct) {
-            $("#sendmessage").click(() => funct());
+            $("#sendmessage").click(() => {
+                var message = $("#message").val();
+                funct(message);
+            });
         }
     }
     exports.UI = UI;

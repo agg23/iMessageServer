@@ -64,8 +64,11 @@ class UI {
         $(".messages").append("<div><div>" + message.text + "</div><div>" + message.isFromMe + "</div></div>");
     }
 
-    public registerSendClick(funct: () => void) {
-        $("#sendmessage").click(() => funct());
+    public registerSendClick(funct: (input: string) => void) {
+        $("#sendmessage").click(() => {
+            var message: string = $("#message").val() as string;
+            funct(message)
+        });
     }
 }
 

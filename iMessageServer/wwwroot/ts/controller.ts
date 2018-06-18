@@ -20,9 +20,8 @@ class Controller {
                 this.setActiveConversation(conversation);
             }
         });
-        this.ui.registerSendClick(() => {
-            console.log("CLick");
-            this.sendMessage("test", this.state.activeConversation);
+        this.ui.registerSendClick((input: string) => {
+            this.sendMessage(input, this.state.activeConversation);
         })
 
         this.ui.renderConversations();

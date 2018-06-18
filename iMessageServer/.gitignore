@@ -1,3 +1,7 @@
 wwwroot/lib/
 node_modules/
 messages.db
+
+wwwroot/ts/*.js
+
+../.vs/iMessageServer/DesignTimeBuild/.dtbcache
